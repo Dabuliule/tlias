@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/emps")
 public class EmpController {
 
-    private EmpService empService;
+    private final EmpService empService;
 
     @Autowired
     public EmpController(EmpService empService) {
