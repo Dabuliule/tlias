@@ -18,4 +18,6 @@ public interface EmpService {
     Emp get(Integer id);
 
     void update(Emp emp);
+
+    Emp login(String username, String password);
 }
