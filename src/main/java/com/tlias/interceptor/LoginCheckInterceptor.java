@@ -1,31 +1,28 @@
-package com.tlias.filter;
+package com.tlias.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tlias.pojo.Result;
 import com.tlias.utils.JwtUtils;
-import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import java.io.IOException;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
-//@WebFilter(urlPatterns = "/*")
-public class LoginCheckFilter implements Filter {
+@Component
+public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String requestURI = request.getRequestURI();
         log.info("requestURI: {}", requestURI);
 
         if (requestURI.contains("/login")) {
             log.info("登录操作, 放行");
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
+            return true;
         }
 
         String jwt = request.getHeader("token");
@@ -35,7 +32,7 @@ public class LoginCheckFilter implements Filter {
             Result error = Result.error("NOT_LOGIN");
             String jsonString = JSONObject.toJSONString(error);
             response.getWriter().write(jsonString);
-            return;
+            return false;
         }
 
         try {
@@ -45,10 +42,20 @@ public class LoginCheckFilter implements Filter {
             Result error = Result.error("NOT_LOGIN");
             String jsonString = JSONObject.toJSONString(error);
             response.getWriter().write(jsonString);
-            return;
+            return false;
         }
 
         log.info("令牌合法, 放行");
-        filterChain.doFilter(servletRequest, servletResponse);
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }
