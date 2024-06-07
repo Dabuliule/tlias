@@ -24,3 +24,7 @@ minio:
     accessKey: p9gja0nx7zv71p6eZ1KD
     secretKey: rcOpR0kp1aDkKX6xHAOAsR7mbrd2PiTmoVKIBEDA
     bucketName: tlias
+
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug

@@ -2,10 +2,7 @@ package com.tlias.mapper;
 
 
 import com.tlias.pojo.Emp;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,4 +27,7 @@ public interface EmpMapper {
 
     @Select("select * from emp where username = #{username} and password = #{password}")
     Emp selectByUsernameAndPassword(String username, String password);
+
+    @Delete("delete from emp where dept_id = #{deptId}")
+    void deleteByDeptId(Integer deptId);
 }
