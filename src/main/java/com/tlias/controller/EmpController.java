@@ -1,6 +1,7 @@
 package com.tlias.controller;
 
 
+import com.tlias.anno.Log;
 import com.tlias.pojo.Emp;
 import com.tlias.pojo.PageBean;
 import com.tlias.pojo.Result;
@@ -38,6 +39,7 @@ public class EmpController {
         return Result.success(pageBean);
     }
 
+    @Log
     @DeleteMapping("/{ids}")
     public Result delete(@PathVariable List<Integer> ids) {
         log.info("批量删除: {}", ids);
@@ -45,6 +47,7 @@ public class EmpController {
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result add(@RequestBody Emp emp) {
         log.info("增加员工: {}", emp.toString());
@@ -58,6 +61,7 @@ public class EmpController {
         return Result.success(empService.get(id));
     }
 
+    @Log
     @PutMapping
     public Result update(@RequestBody Emp emp) {
         log.info("修改员工: {}", emp.toString());

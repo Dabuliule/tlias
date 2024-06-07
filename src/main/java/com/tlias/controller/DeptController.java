@@ -1,6 +1,7 @@
 package com.tlias.controller;
 
 
+import com.tlias.anno.Log;
 import com.tlias.pojo.Dept;
 import com.tlias.pojo.Result;
 import com.tlias.service.DeptService;
@@ -30,6 +31,7 @@ public class DeptController {
         return Result.success(deptList);
     }
 
+    @Log
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         deptService.delete(id);
@@ -37,6 +39,7 @@ public class DeptController {
         return Result.success();
     }
 
+    @Log
     @PostMapping
     public Result add(@RequestBody Dept dept) {
         deptService.add(dept);
@@ -50,6 +53,7 @@ public class DeptController {
         return Result.success(dept);
     }
 
+    @Log
     @PutMapping
     public Result update(@RequestBody Dept dept) {
         deptService.update(dept);
